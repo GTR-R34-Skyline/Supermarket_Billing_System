@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Get Product Details</h2>
+<form id="getProductForm">
+    <label for="product_id">Product ID:</label>
+    <input type="text" name="product_id" id="product_id" required>
+    <button type="submit">Get Product</button>
+</form>
+
+<div id="productDetails"></div>
+
+<script>
+    document.getElementById('getProductForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const productId = document.getElementById('product_id').value;
+
+        // Fetch the product details from the server
+        const response = await fetch("{{ url_for('get_product') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({ product_id: productId })
+        });
+
+        // Parse the JSON response
+        const result = await response.json();
+        const detailsDiv = document.getElementById('productDetails');
+
+        // Display the result
+        if (result.status === 'success') {
+            const product = result.product;
+            detailsDiv.innerHTML = `<h3>Product Details:</h3>
+                                    <p>Name: ${product[1]}</p>
+                                    <p>Quantity: ${product[2]}</p>
+                                    <p>Price: $${product[3]}</p>`;
+        } else {
+            detailsDiv.innerHTML = `<p>${result.message}</p>`;
+        }
+    };
+</script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Get Customer Details</h2>
+<form id="getCustomerForm">
+    <label for="phone">Phone Number:</label>
+    <input type="text" name="phone" id="phone" required>
+    <button type="submit">Get Customer</button>
+</form>
+
+<div id="customerDetails"></div>
+
+<script>
+    document.getElementById('getCustomerForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const phone = document.getElementById('phone').value;
+
+        // Fetch the customer details from the server
+        const response = await fetch("{{ url_for('get_customer') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({ phone })
+        });
+
+        // Parse the JSON response
+        const result = await response.json();
+        const detailsDiv = document.getElementById('customerDetails');
+
+        // Display the result
+        if (result.status === 'success') {
+            const customer = result.customer;
+            detailsDiv.innerHTML = `<h3>Customer Details:</h3>
+                                    <p>Name: ${customer[1]}</p>
+                                    <p>Email: ${customer[2]}</p>
+                                    <p>Phone: ${customer[3]}</p>`;
+        } else {
+            detailsDiv.innerHTML = `<p>${result.message}</p>`;
+        }
+    };
+</script>
+{% endblock %}

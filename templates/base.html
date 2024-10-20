@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermarket Billing System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Header styling */
+        .header {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header img {
+            height: 50px; /* Adjust height as needed */
+            width: auto;  /* Maintain aspect ratio */
+        }
+        .header h1 {
+            margin: 0;
+            padding-left: 15px;
+            font-size: 24px;
+        }
+
+        /* Navbar styling */
+        nav {
+            background-color: #343a40;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px;
+        }
+
+        /* Content styling */
+        .container {
+            padding: 20px;
+            margin-bottom: 80px; /* Ensure enough space for footer */
+        }
+
+        /* Footer styling */
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Flash messages styling */
+        .flashes {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        .flashes .error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .flashes .success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        /* Home content styling */
+        .home-content {
+            background-color: #f8f9fa; /* Light gray background */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .home-content h2, .home-content h3 {
+            color: #343a40; /* Dark gray color for headings */
+        }
+        .home-content p, .home-content ul, .home-content ol {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .home-content ul, .home-content ol {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        <h1>Supermarket Billing System</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('add_customer') }}">Add Customer</a></li>
+            <li><a href="{{ url_for('billing') }}">Billing</a></li>
+            <li><a href="{{ url_for('products') }}">Stock</a></li>
+            <li><a href="{{ url_for('add_product') }}">Add New Item</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}
+        <div class="home-content">
+            <h2>Welcome to Our Supermarket Billing System</h2>
+            <p>
+                Our Supermarket Billing System is designed to make your shopping experience seamless and efficient. Whether you're a customer looking to purchase items or a cashier managing the billing process, our platform provides an intuitive interface and powerful features to help you navigate your transactions with ease.
+            </p>
+            
+            <h3>Features:</h3>
+            <ul>
+                <li><strong>Add Customers:</strong> Quickly add new customers to your database for easy tracking and management.</li>
+                <li><strong>Manage Products:</strong> Easily add, update, or remove products from your inventory.</li>
+                <li><strong>Effortless Billing:</strong> Generate bills with just a few clicks, ensuring a smooth checkout process.</li>
+                <li><strong>Customer Tracking:</strong> Keep track of customer purchases and maintain a record of their billing history.</li>
+            </ul>
+
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Navigate to the <strong>Add Customer</strong> page to create a new customer profile.</li>
+                <li>Use the <strong>Manage Products</strong> page to add new items to your inventory.</li>
+                <li>When ready to check out, go to the <strong>Billing</strong> section to generate customer bills.</li>
+                <li>Review and finalize the billing process with a detailed summary of purchases.</li>
+            </ol>
+
+            <h3>Get Started!</h3>
+            <p>
+                Ready to experience hassle-free billing? Start by adding a customer or product today! If you have any questions or feedback, feel free to reach out to our support team.
+            </p>
+        </div>
+        {% endblock %}
+    </div>
+    <div class="footer">
+        &copy; 2024 Supermarket Billing System. All rights reserved.
+    </div>
+</body>
+</html>
